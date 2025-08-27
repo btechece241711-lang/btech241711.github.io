@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect - User Management Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .dashboard-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        .notification {
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-graduation-cap text-purple-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">EduConnect</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-purple-600 transition-colors">Features</a>
+                    <a href="#about" class="text-gray-600 hover:text-purple-600 transition-colors">About</a>
+                    <a href="#contact" class="text-gray-600 hover:text-purple-600 transition-colors">Contact</a>
+                    <button onclick="showAuthModal('login')" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Welcome to EduConnect</h1>
+                    <p class="text-xl mb-8 opacity-90">Your comprehensive educational platform connecting students, parents, teachers, and administrators in one seamless ecosystem.</p>
+                    <button onclick="showAuthModal('signup')" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4d301802-e0db-4663-ac8a-362d99baecd5.png" alt="Modern educational platform interface showing students and teachers collaborating in a digital classroom environment with interactive learning tools" class="rounded-lg shadow-2xl" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Role-Based Access Management</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Choose your role and experience a tailored educational journey with personalized features and capabilities.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Student Card -->
+                <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-user-graduate text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Student</h3>
+                    <p class="text-gray-600 mb-4">Access courses, submit assignments, track progress, and collaborate with peers.</p>
+                    <button onclick="showAuthModal('signup', 'student')" class="text-blue-600 font-semibold hover:text-blue-700">
+                        Join as Student →
+                    </button>
+                </div>
+
+                <!-- Parent Card -->
+                <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Parent</h3>
+                    <p class="text-gray-600 mb-4">Monitor your child's progress, communicate with teachers, and stay informed.</p>
+                    <button onclick="showAuthModal('signup', 'parent')" class="text-green-600 font-semibold hover:text-green-700">
+                        Join as Parent →
+                    </button>
+                </div>
+
+                <!-- Teacher Card -->
+                <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-chalkboard-teacher text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Teacher</h3>
+                    <p class="text-gray-600 mb-4">Create courses, manage assignments, grade work, and communicate with students and parents.</p>
+                    <button onclick="showAuthModal('signup', 'teacher')" class="text-purple-600 font-semibold hover:text-purple-700">
+                        Join as Teacher →
+                    </button>
+                </div>
+
+                <!-- Admin Card -->
+                <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-cogs text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Administrator</h3>
+                    <p class="text-gray-600 mb-4">Manage users, monitor system performance, and oversee platform operations.</p>
+                    <button onclick="showAuthModal('signup', 'admin')" class="text-red-600 font-semibold hover:text-red-700">
+                        Join as Admin →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-md w-full mx-auto p-6 relative">
+            <button onclick="hideAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            
+            <div id="loginForm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Email Address</label>
+                        <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        Sign In
+                    </button>
+                </form>
+                <p class="text-center text-gray-600 mt-4">
+                    Don't have an account? 
+                    <a href="#" onclick="showSignupForm()" class="text-purple-600 hover:text-purple-700 font-semibold">Sign up</a>
+                </p>
+            </div>
+
+            <div id="signupForm" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Create Your Account</h2>
+                <form onsubmit="handleSignup(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Full Name</label>
+                        <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500" placeholder="Enter your full name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Email Address</label>
+                        <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Password</label>
+                        <input type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500" placeholder="Create a password">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2">Select Role</label>
+                        <select id="roleSelect" class="w-full px-4 py-3 border border-gray-300 rounded-lg form-input focus:outline-none focus:border-purple-500">
+                            <option value="student">Student</option>
+                            <option value="parent">Parent</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                        Create Account
+                    </button>
+                </form>
+                <p class="text-center text-gray-600 mt-4">
+                    Already have an account? 
+                    <a href="#" onclick="showLoginForm()" class="text-purple-600 hover:text-purple-700 font-semibold">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Preview -->
+    <section id="dashboardPreview" class="py-20 bg-gray-50 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Personalized Dashboard</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Experience a tailored interface designed specifically for your role and needs.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="dashboard-card p-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6" id="dashboardTitle">Student Dashboard</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-book text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">My Courses</h4>
+                                <p class="text-gray-600 text-sm">Access all your enrolled courses</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-tasks text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Assignments</h4>
+                                <p class="text-gray-600 text-sm">View and submit assignments</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-chart-line text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">Progress Tracking</h4>
+                                <p class="text-gray-600 text-sm">Monitor your learning progress</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card p-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Quick Actions</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="bg-blue-100 text-blue-600 p-4 rounded-lg text-center hover:bg-blue-200 transition-colors">
+                            <i class="fas fa-plus text-lg mb-2"></i>
+                            <p class="text-sm font-semibold">New Course</p>
+                        </button>
+                        <button class="bg-green-100 text-green-600 p-4 rounded-lg text-center hover:bg-green-200 transition-colors">
+                            <i class="fas fa-comment text-lg mb-2"></i>
+                            <p class="text-sm font-semibold">Messages</p>
+                        </button>
+                        <button class="bg-purple-100 text-purple-600 p-4 rounded-lg text-center hover:bg-purple-200 transition-colors">
+                            <i class="fas fa-calendar text-lg mb-2"></i>
+                            <p class="text-sm font-semibold">Schedule</p>
+                        </button>
+                        <button class="bg-red-100 text-red-600 p-4 rounded-lg text-center hover:bg-red-200 transition-colors">
+                            <i class="fas fa-cog text-lg mb-2"></i>
+                            <p class="text-sm font-semibold">Settings</p>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-white rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-3">Recent Activity</h4>
+                        <div class="space-y-2">
+                            <p class="text-sm text-gray-600">✓ Completed Math Assignment</p>
+                            <p class="text-sm text-gray-600">✓ Joined Science Course</p>
+                            <p class="text-sm text-gray-600">✓ Received feedback on Essay</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">EduConnect</h3>
+                    <p class="text-gray-400">Connecting educators, students, and parents in a seamless learning ecosystem.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Us</h4>
+                    <p class="text-gray-400 mb-2">info@educonnect.com</p>
+                    <p class="text-gray-400">+1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2024 EduConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentUser = null;
+
+        // Auth Modal Functions
+        function showAuthModal(type, role = null) {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            if (type === 'login') {
+                showLoginForm();
+            } else {
+                showSignupForm();
+                if (role) {
+                    document.getElementById('roleSelect').value = role;
+                }
+            }
+        }
+
+        function hideAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+        }
+
+        function showSignupForm() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+
+        // Form Handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+            
+            // Simulate login (would be replaced with actual auth API call)
+            currentUser = {
+                email: email,
+                role: 'student', // Default role for demo
+                name: 'Demo User'
+            };
+            
+            hideAuthModal();
+            showDashboard();
+            showNotification('Successfully logged in!', 'success');
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const password = formData.get('password');
+            const role = document.getElementById('roleSelect').value;
+            
+            // Simulate signup (would be replaced with actual auth API call)
+            currentUser = {
+                name: name,
+                email: email,
+                role: role,
+                createdAt: new Date().toISOString()
+            };
+            
+            hideAuthModal();
+            updateDashboardForRole(role);
+            showDashboard();
+            showNotification('Account created successfully!', 'success');
+        }
+
+        function showDashboard() {
+            document.getElementById('dashboardPreview').classList.remove('hidden');
+        }
+
+        function updateDashboardForRole(role) {
+            const title = document.getElementById('dashboardTitle');
+            switch(role) {
+                case 'student':
+                    title.textContent = 'Student Dashboard';
+                    break;
+                case 'parent':
+                    title.textContent = 'Parent Dashboard';
+                    break;
+                case 'teacher':
+                    title.textContent = 'Teacher Dashboard';
+                    break;
+                case 'admin':
+                    title.textContent = 'Administrator Dashboard';
+                    break;
+            }
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg transform transition-transform duration-300 notification ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('authModal').addEventListener('click', (e) => {
+            if (e.target.id === 'authModal') {
+                hideAuthModal();
+            }
+        });
+
+        // Demo data for dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simulate user session check
+            const savedUser = localStorage.getItem('demoUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateDashboardForRole(currentUser.role);
+                showDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
+
